@@ -101,7 +101,6 @@ class UsersController extends Controller
 
             $zk->disableDevice();
             // echo 'disabling device</br>';
-            $zk->clearUser();
             // start working here
             
             $user = User::create([
