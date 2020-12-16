@@ -120,7 +120,6 @@ class UsersController extends Controller
             $zk->disconnect();
             // echo 'disconnected';
         }catch(\Exception $e){
-            dd($e);
         }
         return redirect()->route('user.index');
     }

@@ -15,13 +15,13 @@ class SettingController extends Controller
 
     public function update(Request $request){
     
-        $setting = Setting::updateOrCreate([
-            'ip'=>$request->ip,
-            'check_in'=>$request->check_in,
-            'check_out'=>$request->check_out,
-            'check_in_threshold'=>$request->check_in_threshold,
-            'check_out_threshold'=>$request->check_out_threshold
-        ]);
+        $setting = Setting::find($request->id);
+        $setting->ip = $request->ip;
+        $setting->check_in = $request->check_in;
+        $setting->check_out = $request->check_out;
+        $setting->check_in_threshold = $request->check_in_threshold;
+        $setting->check_out_threshold = $request->check_out_threshold;
+        $setting->save();
 
         return redirect()->route('dashboard');
     }
