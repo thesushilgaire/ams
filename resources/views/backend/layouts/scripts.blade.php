@@ -11,6 +11,8 @@
 <script src="{{asset("assets/dist/js/app.min.js")}}"></script>
 <!-- PACE -->
 <script src="{{asset("assets/plugins/pace/pace.min.js")}}"></script>
+{{-- nepalidate picker --}}
+<script src="{{asset("assets/dist/js/nepalidatepicker.min.js")}}"></script>
 <script>
     $(document).ajaxStart(function() { Pace.restart(); });
 </script>

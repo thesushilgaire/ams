@@ -11,6 +11,10 @@ use App\Models\Setting;
 
 class AttendanceController extends Controller
 {
+
+    public function dashboard(){
+        return view('dashboard');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -102,7 +106,7 @@ class AttendanceController extends Controller
             // return false;
         }
         
-            $allAttendances = Attendance::orderBy('created_at','desc')->get();
+            $allAttendances = Attendance::orderBy('time_bs','desc')->paginate(32);
             return view('backend.pages.attendance.index',compact('allAttendances'));
     }
 
@@ -171,5 +175,19 @@ class AttendanceController extends Controller
     {
         //
     }
+    // attendance report
+    public function fetchAttendance(Request $request){
+    
+        $attendances = Attendance::join('users', 'users.id', 'attendances.user_id')
+        ->select('attendances.id as id','attendances.time_bs as date','attendances.status as status','users.name as user')
+        ->where('attendances.user_id',$request->userId)
+        ->whereBetween('attendances.time_bs',[$request->dateFrom,$request->dateTo])
+        ->orderBy('attendances.time_bs', 'desc')
+        ->take(32);
 
+        return Datatables::of($attendances)
+        ->addIndexColumn()
+        ->make(true);
+
+    }
 }

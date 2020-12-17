@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
 @endpush
 @section('page-title')
-<title>ATTENDANCE REPORT | BrightAMS</title>
+<title>Attendance Report | BrightAMS</title>
 @endsection
 
 @section("main-content")
@@ -21,10 +21,24 @@
                     <table id="example1" class="table table-bordered table-hover text-nowrap" style="width:100%;background-color:#fff">
                         <thead>
                             <tr style="background:white">
-                                <th style="font-size:12px;color:black">Search By :</th>
-                                <td><input type="text" id="user" class="form-control" placeholder="name" style="height:30px;width:100%"></td>
-                                <td><input type="text" id="date" class="form-control" placeholder="date" style="height:30px;width:100%"></td>
-                                <td><input type="text" id="status" class="form-control" placeholder="status" style="height:30px;width:100%"></td>
+                                <td>
+                                    <label for="">S</label>
+                                    <select name="user" id="user" class="form-control" style="width:100%">
+                                        <option value="">Select User...</option>
+                                        @foreach($users as $user)
+                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                                        @endforeach()
+                                    </select>
+                                </td>
+                                <td>
+                                    <label for="" style="color: #000">From</label>
+                                <input type="text" id="dateFrom" class="form-control" value="{{adToBs(substr(\Carbon\Carbon::now()->subDays(30),0,10))}}" style="height:30px;width:90%"></td>
+                                <td>
+                                    <label for="To" style="color:#000">To</label>
+                                    <input type="text" id="dateTo" class="form-control" value="{{adToBs(date('Y-m-d'))}}" style="height:30px;width:90%"></td>
+                                    <td style="color: #000">
+                                        <button id="search"><i class="fa fa-search" style="padding-left: 5px;padding-right:5px"></i></button>
+                                    </td>
                             </tr>
                         <tr>
                             <th>S.N</th>
@@ -48,10 +62,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
-  <script>
+
+<script>
     $(document).ready(function() {
+
+        /* Initialize NepaliDatepicker with options */
+        $("#dateFrom,#dateTo").nepaliDatePicker({
+        ndpYear: true,
+        ndpMonth: true,
+        ndpYearCount: 10
+        });
         // datatable fetching worksheet
-        let user = $('#user').val();
       var oTable = $('#example1').DataTable({
         processing: true,
         serverSide: true,
@@ -76,13 +97,13 @@
             }
         ],
         ajax: {
-            url: `{{url('/reports/fetch-attendance-report')}}`,
+            url: `{{url('/attendance/fetch-attendance')}}`,
             method:'POST',
             data: function(d){
                 d._token = "{{ csrf_token() }}",
-                d.user = $('#user').val(),
-                d.date = $("#date").val(),
-                d.status = $("#status").val()
+                d.userId = $('#user').val(),
+                d.dateFrom = $("#dateFrom").val(),
+                d.dateTo = $('#dateTo').val()
           }
           },
         "columns": [
@@ -93,7 +114,7 @@
         ]
       });
 
-      $("#user,#date,#status").keyup(function(e){
+      $("#search").click(function(e){
         oTable.draw();
       });
     });

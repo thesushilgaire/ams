@@ -51,7 +51,8 @@
         </div>
         <div class="row">
             <div class="form-group col-lg-6">
-                <input type="submit" value="Submit" class="btn btn-primary">
+                <input type="submit" value="Update" class="btn btn-primary">
+            <a href="{{route('dashboard')}}"><input type="button" value="Close" class="btn btn-warning"></a> 
             </div>
         </div>
   </form>

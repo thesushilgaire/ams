@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="{{asset('assets/dist/css/skins/_all-skins.min.css')}}">
  <!-- Pace style -->
  <link rel="stylesheet" href="{{asset("assets/plugins/pace/pace.min.css")}}">
+ {{-- nepali date picker --}}
+ <link rel="stylesheet" href="{{asset('assets/dist/css/nepalidatepicker.min.css')}}">
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
