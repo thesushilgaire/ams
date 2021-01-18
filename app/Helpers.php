@@ -1204,7 +1204,7 @@ class ZKLibrary {
 	                            $bytes = 0;
 	                        }
 	                    }
-	                    $this->session_id = hexdec($u['h6'] . $u['h5']);
+	                    // $this->session_id = hexdec($u['h6'] . $u['h5']);
 	                    $received_data = $this->recv();
 	                }
 	                if ($lonreceived_data > 24) {

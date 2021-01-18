@@ -77,16 +77,20 @@ class AttendanceController extends Controller
                     
                     // dd($attends);
                     //create attendances
-                    $att = Attendance::create([
+                    $data[] = [
                         'uid'=>$a[0],
                         'user_id'=>$a[1],
                         'state'=>$a[2],
                         'time_ad'=>$a[3],
                         'time_bs'=>adToBs(substr($a[3],0,10)) .' '. substr($a[3],11,19),
                         'status'=>$status,
-                    ]); 
+                        'created_at'=>$a[3],
+                        'updated_at'=>$a[3]
+                    ];
 
                 }
+                $att = Attendance::insert($data); 
+
                 //clear attendances
                 $zk->clearAttendance();
             }
@@ -182,8 +186,7 @@ class AttendanceController extends Controller
         ->select('attendances.id as id','attendances.time_bs as date','attendances.status as status','users.name as user')
         ->where('attendances.user_id',$request->userId)
         ->whereBetween('attendances.time_bs',[$request->dateFrom,$request->dateTo])
-        ->orderBy('attendances.time_bs', 'desc')
-        ->take(32);
+        ->orderBy('attendances.time_bs', 'desc');
 
         return Datatables::of($attendances)
         ->addIndexColumn()

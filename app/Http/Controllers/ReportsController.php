@@ -18,8 +18,7 @@ class ReportsController extends Controller
     public function fetchAttendanceReport(Request $request){
         $attendances = Attendance::join('users', 'users.id', 'attendances.user_id')
         ->select('attendances.id as id','attendances.time_bs as date','attendances.status as status','users.name as user')
-        ->orderBy('attendances.created_at', 'desc')
-        ->take(32);
+        ->orderBy('attendances.created_at', 'desc');
 
     return Datatables::of($attendances)
         ->filter(function ($query) use ($request) {
