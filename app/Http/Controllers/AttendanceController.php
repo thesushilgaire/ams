@@ -93,7 +93,7 @@ class AttendanceController extends Controller
                 $att = Attendance::insert($data); 
 
                 //clear attendances
-                // $zk->clearAttendance();
+                $zk->clearAttendance();
             }
                 // end working here
                 $zk->enableDevice();
