@@ -9,46 +9,70 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
 @endpush
 @section('page-title')
-<title>Attendance Report | BrightAMS</title>
+<title>Attendance Report</title>
 @endsection
 
 @section("main-content")
         <div class="content">
         <h4 style="color: #0e5461">ATTENDANCE REPORT</h4>
            <br>
+           <form method="POST" action="{{route('attendance.fetch')}}">
+            @csrf
             <div class="row">
                 <div class="col-lg-12" >
+                  @if(@$username) <center> <h4>Attendance report of <b>{{@$username}}</b> from <b>{{@$dateFrom}}</b> to <b>{{@$dateTo}}</b></h4></center>@endif
                     <table id="example1" class="table table-bordered table-hover text-nowrap" style="width:100%;background-color:#fff">
                         <thead>
                             <tr style="background:white">
                                 <td>
+                                <input type="hidden" id="username" value="{{@$username}}">
+                                <input type="hidden" id="fromDate" value="{{@$dateFrom}}">
+                                <input type="hidden" id="toDate" value="{{@$dateTo}}">
                                     <label for="">S</label>
-                                    <select name="user" id="user" class="form-control" style="width:100%">
+                                    <select id="user" name="user" class="form-control" style="width:100%" required>
                                         <option value="">Select User...</option>
                                         @foreach($users as $user)
-                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                                    <option value="{{$user->id}}" username="{{$user->name}}">{{$user->name}}</option>
                                         @endforeach()
                                     </select>
                                 </td>
                                 <td>
                                     <label for="" style="color: #000">From</label>
-                                <input type="text" id="dateFrom" class="form-control" value="{{adToBs(substr(\Carbon\Carbon::now()->subDays(30),0,10))}}" style="height:30px;width:90%"></td>
+                                <input type="text" id="dateFrom" name="date_from" class="form-control" value="{{adToBs(substr(\Carbon\Carbon::now()->subDays(30),0,10))}}" style="height:30px;width:90%"></td>
                                 <td>
                                     <label for="To" style="color:#000">To</label>
-                                    <input type="text" id="dateTo" class="form-control" value="{{adToBs(date('Y-m-d'))}}" style="height:30px;width:90%"></td>
+                                    <input type="text" id="dateTo" name="date_to" class="form-control" value="{{adToBs(date('Y-m-d'))}}" style="height:30px;width:90%"></td>
                                     <td style="color: #000">
-                                        <button id="search"><i class="fa fa-search" style="padding-left: 5px;padding-right:5px"></i></button>
+                                        <input type="submit" value="Search" id="search">
                                     </td>
                             </tr>
+                        </form>
                         <tr>
-                            <th>S.N</th>
-                            <th>User</th>
+                            <th>Day</th>
                             <th>Date</th>
+                            <th>Time</th>
                             <th>Status</th>
                         </tr>
                         </thead>
                         <tbody id="attendanceTableBody">
-                        
+                            @if(@$attendances)
+                            @foreach ($attendances as $key => $data)
+                            <tr>
+                            <td>{{\Carbon\Carbon::parse($key)->format('l')}}</td>
+                            <td>{{$key}}</td>
+                            <td> 
+                                @foreach ($data as $item)
+                                        <span style="padding:5px">{{\Carbon\Carbon::parse($item->time_bs)->format('g:i A')}}</span><br>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($data as $item)
+                                    <span style="padding:5px">{{$item->status}}</span><br>
+                                @endforeach
+                            </td>
+                            </tr>
+                            @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -65,8 +89,7 @@
 
 <script>
     $(document).ready(function() {
-
-        /* Initialize NepaliDatepicker with options */
+        
         $("#dateFrom,#dateTo").nepaliDatePicker({
         ndpYear: true,
         ndpMonth: true,
@@ -74,48 +97,47 @@
         });
         // datatable fetching worksheet
       var oTable = $('#example1').DataTable({
-        processing: true,
-        serverSide: true,
         bLengthChange: false,
         searching:false,
         ordering:false,
         "paging": true,
         "displayStart": 0,
-        "lengthMenu": [[32, 64,98,-1], [32, 64, 98,"All"]],
+        "lengthMenu": [[26, 52,78,-1], [26, 52, 78,"All"]],
         "lengthChange": true,
         dom: 'Bfrtip',
         buttons: [
-            'excelHtml5',
+            {
+                extend: 'excelHtml5',
+                messageTop:function () {
+                    let username = $('#username').val();
+                    let from = $('#fromDate').val();
+                    let to = $('#toDate').val();
+                return `Attendance report of ${username} from ${from} to ${to}`;
+            }
+            },
             {
                 extend: 'pdfHtml5',
                 orientation: 'portrait',
-                pageSize: 'A4'
+                pageSize: 'A4',
+                messageTop:function () {
+                    let username = $('#username').val();
+                    let from = $('#fromDate').val();
+                    let to = $('#toDate').val();
+                return `Attendance report of ${username} from ${from} to ${to}`;
+            }
             },
             {
                 extend: 'print',
-                messageTop: ''
+                title:' ',
+                messageTop: function () {
+                    let username = $('#username').val();
+                    let from = $('#fromDate').val();
+                    let to = $('#toDate').val();
+                return `<h3>Attendance report of <b>${username}</b> from <b>${from}</b> to <b>${to}</b></h3>`;
             }
-        ],
-        ajax: {
-            url: `{{url('/attendance/fetch-attendance')}}`,
-            method:'POST',
-            data: function(d){
-                d._token = "{{ csrf_token() }}",
-                d.userId = $('#user').val(),
-                d.dateFrom = $("#dateFrom").val(),
-                d.dateTo = $('#dateTo').val()
-          }
-          },
-        "columns": [
-          { data: 'DT_RowIndex', name: 'id' },
-          { data: 'user', name: 'user' },
-          { data: 'date', name: 'date' },
-          { data: 'status', name: 'status' },
+                
+            }
         ]
-      });
-
-      $("#search").click(function(e){
-        oTable.draw();
       });
     });
 </script>
