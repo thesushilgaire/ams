@@ -24,7 +24,7 @@
                     <table id="example1" class="table table-bordered table-hover text-nowrap" style="width:100%;background-color:#fff">
                         <thead>
                             <tr style="background:white">
-                                <td>
+                                <td style="width: 120px">
                                 <input type="hidden" id="username" value="{{@$username}}">
                                 <input type="hidden" id="fromDate" value="{{@$dateFrom}}">
                                 <input type="hidden" id="toDate" value="{{@$dateTo}}">

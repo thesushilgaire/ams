@@ -20,20 +20,34 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-pie-chart"></i>
+            <span>Setup</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="{{route('reports.index')}}"><i class="fa fa-circle-o"></i>General Setup</a></li>
+          <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>Public Holiday</a></li>
+          <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>Office Details</a></li>
+          </ul>
+        </li>
         <li>
         <a href="{{route('user.index')}}">
-            <i class="fa fa-users"></i> <span>Users</span>
+            <i class="fa fa-users"></i> <span>Employee Mgmt.</span>
           </a>
         </li>
         <li>
         <a href="{{route('attendance.index')}}">
-            <i class="fa fa-clock-o"></i> <span>Attendance</span>
+            <i class="fa fa-clock-o"></i> <span>Leave Mgmt.</span>
           </a>
         </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-cogs"></i>
-            <span>Settings</span>
+            <span>Reports</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -43,6 +57,11 @@
           <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>General Settings</a></li>
           </ul>
         </li>
+        <li>
+          <a href="{{route('attendance.index')}}">
+              <i class="fa fa-clock-o"></i> <span>Logout</span>
+            </a>
+          </li>
       </ul>
     </section>
     <!-- /.sidebar -->
