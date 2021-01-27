@@ -53,6 +53,7 @@ class UsersController extends Controller
             
             $user = User::create([
                 'name'=>$request->name,
+                'number'=>$request->number,
                 'password'=>$request->password,
                 'role_id'=>$request->role,
                 'email'=>$request->email
@@ -104,7 +105,15 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-       //
+       $user = User::find($id);
+       $user->name = $request->name;
+       $user->number = $request->number;
+       $user->password = $request->password;
+       $user->role_id = $request->role;
+       $user->email = $request->email;
+       $user->save();
+
+       return redirect()->back();
     }
 
     /**

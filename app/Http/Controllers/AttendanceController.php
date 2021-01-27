@@ -36,7 +36,6 @@ class AttendanceController extends Controller
             
             // start working here
             $attendances = $zk->getAttendance(); 
-           
             // $collection = collect($attendances);
       
             // $grouped = $collection->groupBy(1,substr(3,0,10))->map(function ($row) {
@@ -62,18 +61,21 @@ class AttendanceController extends Controller
                     if($currentTime->gt($endTime) || $currentTime->diffInMinutes($endTime) < $checkOutThreshold){
                         $status = 'Check Out';
                     }
-                    if($currentTime->between($startTime->addMinutes($checkInThreshold),$endTime->subMinute($checkOutThreshold),true)){
+                    if($currentTime->between($startTime->addMinutes($checkInThreshold),$endTime->subMinutes($checkOutThreshold),true)){
                         $currentDate = substr($a[3],0,10);
                         $attends = Attendance::where('time_ad','like', "%{$currentDate}%")
-                                            ->where('user_id',$a[1])->get();
-                        // if(count($attends) >= 1){
-                        //     $status = 'Early Check Out';
-                        // }
-                        if(count($attends) < 1){
-                            $status = 'Late Check In';
-                        }else{
+                                            ->where('user_id',$a[1])
+                                            ->whereBetween('time_ad',[$startTime->addMinutes($checkInThreshold),$endTime->subMinutes($checkOutThreshold)])
+                                            ->get();
+                        if(count($attends) >= 1){
                             $status = 'Early Check Out';
                         }
+                        if(count($attends) < 1){
+                            $status = 'Late Check In';
+                        }
+                        // else{
+                        //     $status = 'Early Check Out';
+                        // }
                     }
                     
                     // dd($attends);
@@ -93,7 +95,7 @@ class AttendanceController extends Controller
                 $att = Attendance::insert($data); 
 
                 //clear attendances
-                $zk->clearAttendance();
+                // $zk->clearAttendance();
             }
                 // end working here
                 $zk->enableDevice();

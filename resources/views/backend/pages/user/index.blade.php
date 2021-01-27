@@ -40,8 +40,9 @@
               <th>SN</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Number</th>
               <th>Role</th>
-              {{-- <th>Action</th> --}}
+              <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -50,8 +51,9 @@
                 <td>{{$loop->iteration}}</td>
                 <td>{{$u->name}}</td>
                 <td>{{$u->email}}</td>
+                <td>{{$u->number}}</td>
                 <td>{{$u->role_id == 0 ? 'Staff' : 'Super Administrator'}}</td>
-              {{-- <th><a href="{{route('user.edit',$u->id)}}"><i class="fa fa-eye"></i></a></th> --}}
+              <th><a href="{{route('user.edit',$u->id)}}"><i class="fa fa-edit"></i></a></th>
               </tr>
             @endforeach()
             </tbody>
@@ -96,7 +98,10 @@
                 <label for="email">Email</label>
                 <input type="email" class="form-control" name="email" id="email">
               </div>
-       
+              <div class="col-md-6">
+                <label for="number">Number</label>
+                <input type="number" class="form-control" name="number" id="number">
+              </div>
               <div class="col-md-6">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" name="password" id="password">

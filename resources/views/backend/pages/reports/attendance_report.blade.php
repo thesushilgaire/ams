@@ -48,6 +48,7 @@
                             </tr>
                         </form>
                         <tr>
+                        <th style="width:30px">SN</th>
                             <th>Day</th>
                             <th>Date</th>
                             <th>Time</th>
@@ -58,15 +59,16 @@
                             @if(@$attendances)
                             @foreach ($attendances as $key => $data)
                             <tr>
-                            <td>{{\Carbon\Carbon::parse($key)->format('l')}}</td>
+                            <td style="width:30px">{{$loop->iteration}}</td>
+                            <td>{{\Carbon\Carbon::parse(bsToad($key))->format('l')}}</td>
                             <td>{{$key}}</td>
                             <td> 
-                                @foreach ($data as $item)
+                                @foreach ($data->reverse() as $item)
                                         <span style="padding:5px">{{\Carbon\Carbon::parse($item->time_bs)->format('g:i A')}}</span><br>
                                 @endforeach
                             </td>
                             <td>
-                                @foreach ($data as $item)
+                                @foreach ($data->reverse() as $item)
                                     <span style="padding:5px">{{$item->status}}</span><br>
                                 @endforeach
                             </td>
