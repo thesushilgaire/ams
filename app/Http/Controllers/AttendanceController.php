@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use Illuminate\Http\Request;
 use ZKLibrary; // Important
 use DB;
+use App\Models\User;
 use Yajra\DataTables\DataTables;
 use App\Models\Setting;
 
@@ -181,16 +182,15 @@ class AttendanceController extends Controller
     }
     // attendance report
     public function fetchAttendance(Request $request){
+        $users = User::all();
+        $username = User::where('id',$request->user)->pluck('name')->first();
+        $dateFrom = $request->date_from;
+        $dateTo = $request->date_to;
     
-        $attendances = Attendance::join('users', 'users.id', 'attendances.user_id')
-        ->select('attendances.id as id','attendances.time_bs as date','attendances.status as status','users.name as user')
-        ->where('attendances.user_id',$request->userId)
-        ->whereBetween('attendances.time_bs',[$request->dateFrom,$request->dateTo])
-        ->orderBy('attendances.time_bs', 'desc');
-
-        return Datatables::of($attendances)
-        ->addIndexColumn()
-        ->make(true);
-
+        $attendances = Attendance::where('attendances.user_id',$request->user)->whereBetween('attendances.time_bs',[$request->date_from,$request->date_to])->orderBy('attendances.time_bs','desc')->get()->groupBy(function($a){
+            return (\Carbon\Carbon::parse($a->time_bs))->format('Y-m-d');
+        });
+        // dd($attendances);
+        return view('backend.pages.reports.attendance_report',compact('attendances','users','username','dateFrom','dateTo'));
     }
 }
