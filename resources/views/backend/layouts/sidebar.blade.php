@@ -59,7 +59,7 @@
           </a>
           <ul class="treeview-menu">
           <li><a href="{{route('reports.index')}}"><i class="fa fa-circle-o"></i>Attendance Report</a></li>
-          <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>General Settings</a></li>
+          <li><a href="{{route('settings.index')}}"><i class="fa fa-circle-o"></i>General Settings</a></li>
           </ul>
         </li>
         <li>
