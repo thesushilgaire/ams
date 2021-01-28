@@ -42,7 +42,7 @@
               <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
   
               <div class="info-box-content">
-                <span class="info-box-text">Present</span>
+                <span class="info-box-text">Present Today</span>
                 <span class="info-box-number">8</span>
               </div>
               <!-- /.info-box-content -->
@@ -59,7 +59,7 @@
               <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
   
               <div class="info-box-content">
-                <span class="info-box-text">Absent</span>
+                <span class="info-box-text">Absent Today</span>
                 <span class="info-box-number">2</span>
               </div>
               <!-- /.info-box-content -->

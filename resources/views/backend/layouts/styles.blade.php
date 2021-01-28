@@ -62,6 +62,26 @@
       border-radius: 5px;
       border:1px solid#065461;
     }
-    
+    .skin-blue .main-sidebar, .skin-blue .left-side {
+    background-color: #0e5461;
+    }
+  .skin-blue .main-header .logo {
+    background-color: #0e5461;
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    border-right: 1px solid #fff;
+    }
+    .skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a {
+    color: #fff;
+    background: #3c763d;
+    border-left-color: #d1bf24;
+    } 
+    .skin-blue .sidebar-menu>li>.treeview-menu {
+    margin: 0 1px;
+    background: #126271;
+    }
+    .skin-blue .treeview-menu>li>a {
+    color: #fff;
+    }
   </style>
 @endsection()

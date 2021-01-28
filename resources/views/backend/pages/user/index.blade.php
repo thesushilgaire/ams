@@ -41,6 +41,7 @@
               <th>Name</th>
               <th>Email</th>
               <th>Number</th>
+              <th>Address</th>
               <th>Role</th>
               <th>Action</th>
             </tr>
@@ -52,8 +53,9 @@
                 <td>{{$u->name}}</td>
                 <td>{{$u->email}}</td>
                 <td>{{$u->number}}</td>
+                <td>{{$u->address}}</td>
                 <td>{{$u->role_id == 0 ? 'Staff' : 'Super Administrator'}}</td>
-              <th><a href="{{route('user.edit',$u->id)}}"><i class="fa fa-edit"></i></a></th>
+              <th><a href="{{route('user.edit',$u->id)}}"><i class="fa fa-edit"></i></a> | <a href="{{route('user.edit',$u->id)}}" style="color: green"><i class="fa fa-eye"></i></a></th>
               </tr>
             @endforeach()
             </tbody>
@@ -66,7 +68,7 @@
 
   <!-- Create User Modal -->
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="userModalLabel">User Details</h4>
@@ -78,50 +80,107 @@
       <form action="{{route('user.store')}}" method="POST">
         @csrf
           <div class="row form-group">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label for="name">Name <span style="color: red">*</span></label>
-              <input type="text" class="form-control" name="name" id="name" maxlength="28" required>
+              <input type="text" class="form-control" name="name" id="name" maxlength="28" required placeholder="Enter name">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label for="role">Role <span style="color: red">*</span></label>
               <select name="role" id="role" class="form-control" required>
-                <option value="">Select role...</option>
+                <option value="">---select role---</option>
+                <option value="1">Admin</option>
                 <option value="0">Staff</option>
-                <option value="2">Enroller</option>
-                <option value="12">Manager</option>
-                <option value="14">Super Administrator</option>
               </select>
+            </div>
+            <div class="col-md-4">
+              <label for="email">Email<span style="color: red">*</span></label>
+              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" required>
             </div>
           </div>
           <div class="row">
-              <div class="col-md-6">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" name="email" id="email">
+            <div class="col-md-4">
+              <label for="address">Address</label>
+              <input type="text" class="form-control" name="address" id="address" placeholder="Enter address">
+            </div>
+              <div class="col-md-4">
+                <label for="number">Number<span style="color: red">*</span></label>
+                <input type="number" class="form-control" name="number" required id="number" placeholder="Enter number">
               </div>
-              <div class="col-md-6">
-                <label for="number">Number</label>
-                <input type="number" class="form-control" name="number" id="number">
-              </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" name="password" id="password">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password">
               </div>
           </div>
-         
+          <div class="row">
+            <div class="col-md-4">
+              <label for="dob">DOB</label>
+              <input type="text" class="form-control" name="dob" id="dob" placeholder="Enter DOB">
+            </div>
+              <div class="col-md-4">
+                <label for="bloodGroup">Blood Group</label>
+                <input type="text" class="form-control" name="blood_group" id="bloodGroup" placeholder="Enter blood group">
+              </div>
+              <div class="col-md-4">
+                <label for="idCardNumber">ID Card Number</label>
+                <input type="text" class="form-control" name="id_card_number" id="idCardNumber" placeholder="Enter id card number">
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="degination">Degination</label>
+              <input type="text" class="form-control" name="degination" id="degination" placeholder="Enter degination">
+            </div>
+              <div class="col-md-4">
+                <label for="joiningDate">Joining Date</label> 
+                <input type="text" class="form-control" name="joining_date" id="joiningDate" placeholder="Enter joining date">
+              </div>
+              <div class="col-md-4">
+                <label for="shift">Shift <span style="color: red">*</span></label> 
+                <select name="shift" class="form-control" required>
+                    <option value="">---select shift---</option>
+                    @foreach($shifts as $s)
+                        <option value="{{$s->id}}">{{$s->shift_name}}</option>
+                    @endforeach
+                </select>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="pan">Pan Number</label>
+              <input type="text" class="form-control" name="pan_number" id="pan" placeholder="Enter pan number">
+            </div>
+              <div class="col-md-4">
+                <label for="bankAccount">Back Account</label>
+                <input type="text" class="form-control" name="bank_acount" id="bank_account" placeholder="Enter bank account">
+              </div>
+              <div class="col-md-4">
+                <label for="status">Status</label>
+                <select name="status" id="status" class="form-control">
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+              </select>
+            </div>
+          </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </form>
     </div>
   </div>
 </div>
-
 @push('custom-script')
 <script>
-  $(function () {
-    $('#usersTable').DataTable({
+    $(document).ready(function(){
+        /* Initialize NepaliDatepicker with options */
+        $("#dob").nepaliDatePicker({
+        ndpYear: true,
+        ndpMonth: true,
+        ndpYearCount: 10
+        });
+        // datatable
+        $('#usersTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -129,7 +188,6 @@
       "info": true,
       "autoWidth": false
     });
-  });
-</script>
-@endpush
+    });
+</script>@endpush
 @endsection()

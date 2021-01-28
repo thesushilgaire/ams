@@ -45,6 +45,9 @@ class User extends Authenticatable
     ];
 
     public function attendances(){
-        return $this->hasMany('App\Attendance');
+        return $this->hasMany('App\Models\Attendance');
+    }
+    public function shift(){
+        return $this->hasMany('App\Models\Shift');
     }
 }

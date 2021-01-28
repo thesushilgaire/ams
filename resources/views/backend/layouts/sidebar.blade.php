@@ -29,7 +29,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="{{route('reports.index')}}"><i class="fa fa-circle-o"></i>General Setup</a></li>
+          <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>General Setup</a></li>
           <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>Public Holiday</a></li>
           <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>Office Details</a></li>
           </ul>
@@ -58,10 +58,15 @@
           </ul>
         </li>
         <li>
-          <a href="{{route('attendance.index')}}">
-              <i class="fa fa-clock-o"></i> <span>Logout</span>
+          <a  href="{{ route('logout') }}"
+          onclick="event.preventDefault();
+             document.getElementById('logout-form').submit();">
+              <i class="fa fa-sign-out"></i> <span>Logout</span>
             </a>
           </li>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              {{ csrf_field() }}
+              </form>
       </ul>
     </section>
     <!-- /.sidebar -->
