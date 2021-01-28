@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::group(['middleware' => ['auth:web']], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', 'AttendanceController@dashboard')->name('dashboard');
     Route::resource('user', 'UsersController');
     Route::post('attendance/fetch-attendance','AttendanceController@fetchAttendance')->name('attendance.fetch');

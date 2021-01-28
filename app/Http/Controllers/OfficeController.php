@@ -16,7 +16,7 @@ class OfficeController extends Controller
     public function index()
     {
         $details=Office::all();
-        return view('Backend.pages.office_details.index',compact('details'));
+        return view('backend.pages.office_details.index',compact('details'));
     }
 
     /**

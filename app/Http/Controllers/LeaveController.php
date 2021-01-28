@@ -17,7 +17,7 @@ class LeaveController extends Controller
     {
         $leaves_data=Leave::all();
         $users=User::select('id','name')->get();
-        return view('Backend.pages.leave.index',compact('users','leaves_data'));
+        return view('backend.pages.leave.index',compact('users','leaves_data'));
     }
 
     /**

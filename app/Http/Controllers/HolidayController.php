@@ -15,7 +15,7 @@ class HolidayController extends Controller
     public function index()
     {
         $holiday=Holiday::all();
-        return view('Backend.pages.holiday.index',compact('holiday'));
+        return view('backend.pages.holiday.index',compact('holiday'));
     }
 
     /**
