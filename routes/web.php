@@ -10,3 +10,10 @@ Route::resource('attendance','AttendanceController');
 Route::get('reports','ReportsController@index')->name('reports.index');
 Route::get('settings/create', 'SettingController@create')->name('settings.create');
 Route::post('settings/update', 'SettingController@update')->name('settings.update');
+//Leave
+Route::resource('leave', 'LeaveController');
+//Holiday
+Route::resource('holiday', 'HolidayController');
+//Office details
+Route::resource('office_details','OfficeController');
+
