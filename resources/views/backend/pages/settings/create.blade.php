@@ -108,45 +108,45 @@
                 @csrf
                       <div class="row">
                           <div class="form-group col-lg-4">
-                              <label for="">Shift Name</label>
-                          <input type="text"  class="form-control" name="shift_name" placeholder="Enter shift name">
+                              <label for="">Shift Name:<span style="color: red">*</span></label>
+                          <input type="text"  class="form-control" name="shift_name" placeholder="Enter shift name" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Start Date</label>
-                          <input type="text"  id="startDate" class="form-control" name="start_from_bs">
+                              <label for="">Start Date:<span style="color: red">*</span></label>
+                          <input type="text"  id="startDate" class="form-control" name="start_from_bs" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">End Date</label>
-                          <input type="text" id="endDate" class="form-control" name="end_date_bs">
+                              <label for="">End Date:<span style="color: red">*</span></label>
+                          <input type="text" id="endDate" class="form-control" name="end_date_bs" required>
                           </div>
                       </div>
                       <div class="row">
                           <div class="form-group col-lg-4">
-                              <label for="">IP Address</label>
+                              <label for="">IP Address:<span style="color: red">*</span></label>
                           <input type="hidden" name="id" >
                           <input type="text" class="form-control" name="ip" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Check In</label>
+                              <label for="">Check In:<span style="color: red">*</span></label>
                               <input type="text"  class="form-control" name="check_in" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Check Out</label>
+                              <label for="">Check Out:<span style="color: red">*</span></label>
                           <input type="text" class="form-control" name="check_out" required>
                           </div>
                       </div>
                       <div class="row">
                           <div class="form-group col-lg-4">
-                              <label for="">Check In Threshold</label>
+                              <label for="">Check In Threshold:<span style="color: red">*</span></label>
                           <input type="text" class="form-control" name="check_in_threshold" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Check Out Threshold</label>
+                              <label for="">Check Out Threshold:<span style="color: red">*</span></label>
                           <input type="text"  class="form-control" name="check_out_threshold" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Status</label><br>
-                              <select name="status" id="editstatus" class="form-control">
+                              <label for="">Status:<span style="color: red">*</span></label><br>
+                              <select name="status" id="editstatus" class="form-control" required>
                                 <option value="" >--Select--</option>
                                 <option value="1">Active</option>
                                 <option value="0">InActive</option>
@@ -183,45 +183,45 @@
          
                       <div class="row">
                           <div class="form-group col-lg-4">
-                              <label for="">Shift Name</label>
-                          <input type="text"  class="form-control" name="shift_name" id="editshift_name" placeholder="Enter shift name">
+                              <label for="">Shift Name:<span style="color: red">*</span></label>
+                          <input type="text"  class="form-control" name="shift_name" id="editshift_name" placeholder="Enter shift name" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Start Date</label>
-                          <input type="text" class="form-control" name="start_from_bs" id="editstart_from_bs">
+                              <label for="">Start Date:<span style="color: red">*</span></label>
+                          <input type="text" class="form-control" name="start_from_bs" id="editstart_from_bs" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">End Date</label>
-                          <input type="text"  class="form-control" name="end_date_bs" id="editend_date_bs">
+                              <label for="">End Date:<span style="color: red">*</span></label>
+                          <input type="text"  class="form-control" name="end_date_bs" id="editend_date_bs" required>
                           </div>
                       </div>
                       <div class="row">
                           <div class="form-group col-lg-4">
-                              <label for="">IP Address</label>
+                              <label for="">IP Address:<span style="color: red">*</span></label>
                           <input type="hidden" name="id" >
                           <input type="text" class="form-control" name="ip" id="editip" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Check In</label>
+                              <label for="">Check In:<span style="color: red">*</span></label>
                               <input type="text"  class="form-control" name="check_in" id="editcheck_in" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Check Out</label>
+                              <label for="">Check Out:<span style="color: red">*</span></label>
                           <input type="text" class="form-control" name="check_out" id="editcheck_out" required>
                           </div>
                       </div>
                       <div class="row">
                           <div class="form-group col-lg-4">
-                              <label for="">Check In Threshold</label>
+                              <label for="">Check In Threshold:<span style="color: red">*</span></label>
                           <input type="text" class="form-control" name="check_in_threshold" id="editcheck_in_threshold" required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Check Out Threshold</label>
+                              <label for="">Check Out Threshold:<span style="color: red">*</span></label>
                           <input type="text"  class="form-control" name="check_out_threshold" id="editcheck_out_threshold"  required>
                           </div>
                           <div class="form-group col-lg-4">
-                              <label for="">Status</label><br>
-                              <select name="status" id="editstatus" class="form-control">
+                              <label for="">Status:<span style="color: red">*</span></label><br>
+                              <select name="status" id="editstatus" class="form-control" required>
                                   <option value="" disabled>--Select--</option>
                                   <option value="1">Active</option>
                                   <option value="0">InActive</option>
