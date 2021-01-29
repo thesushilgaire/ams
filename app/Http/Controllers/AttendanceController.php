@@ -65,12 +65,8 @@ class AttendanceController extends Controller
                         if(count($attends) < 1){
                             $status = 'Late Check In';
                         }
-                        // else{
-                        //     $status = 'Early Check Out';
-                        // }
                     }
                     
-                    // dd($attends);
                     //create attendances
                     $data[] = [
                         'uid'=>$a[0],

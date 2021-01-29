@@ -13,8 +13,8 @@ class DashboardController extends Controller
 {
     public function login(){
         if(Auth::check() && auth()->user()->role_id === 1){
-            $totalHolidays = Holiday::where('status',1)->where('start_date_bs','LIKE','%'.adTobs(date('Y-m-d')).'%')->get();
             $users = User::where('status',1)->get();
+            $leaves = Leave::where('status',1)->get();
             $totalPeriod =  [];
             $todayLeaves = [];
             foreach($leaves as $leave){
@@ -22,10 +22,12 @@ class DashboardController extends Controller
                 foreach($period as $date){
                         array_push($totalPeriod,$date->format('Y-m-d'));
                 }
-                if(in_array(date('Y-m-d'),$totalPeriod)){
+                if(in_array(adTobs(date('Y-m-d')),$totalPeriod)){
                     array_push($todayLeaves,$leave);
                 }
             }
+
+            $totalHolidays = Holiday::where('status',1)->where('start_date_bs','LIKE','%'.adTobs(date('Y-m-d')) .'%')->get();
             $attendances = Attendance::where('time_bs','LIKE','%'.adTobs(date('Y-m-d')).'%')->get();
             $totalUsersToday = [];
             foreach($attendances as $att){
@@ -34,7 +36,7 @@ class DashboardController extends Controller
             $presentUsers = [];
             $absentUsers = [];
             foreach($users as $u){
-                if(in_array($u,$totalUsersToday)){
+                if(in_array($u->id,$totalUsersToday)){
                     array_push($presentUsers,$u);
                 }else{
                     array_push($absentUsers,$u);

@@ -108,8 +108,9 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        // $user = User::find($id);
+    {     
+        return "Hello";
+         // $user = User::find($id);
         // return view('backend.pages.user.edit',compact(['user']));
     }
 
@@ -122,13 +123,29 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-       $user = User::find($id);
-       $user->name = $request->name;
-       $user->number = $request->number;
-       $user->password = $request->password;
-       $user->role_id = $request->role;
-       $user->email = $request->email;
-       $user->save();
+        $status = 0;
+            if($request->status){
+                $status = $request->status;
+            } else{
+                $status = 0;
+            }
+            $user = User::where('id',$id)->update([
+                'name'=>$request->name,
+                'number'=>$request->number,
+                'password'=>Hash::make($request->password),
+                'role_id'=>$request->role,
+                'email'=>$request->email,
+                'address'=>$request->address,
+                'dob'=>$request->dob,
+                'id_card_number'=>$request->id_card_number,
+                'degination'=>$request->degination,
+                'joining_date'=>$request->joining_date,
+                'shift_id'=>$request->shift,
+                'status'=>$status,
+                'bank_account'=>$request->bank_account,
+                'pan_number'=>$request->parent_number,
+                'blood_group'=>$request->blood_group
+            ]);
 
        return redirect()->back();
     }

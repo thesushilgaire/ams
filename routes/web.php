@@ -10,8 +10,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('attendance/fetch-attendance','AttendanceController@fetchAttendance')->name('attendance.fetch');
     Route::resource('attendance','AttendanceController');
     Route::get('reports','ReportsController@index')->name('reports.index');
-    Route::get('settings/create', 'SettingController@create')->name('settings.create');
-    Route::post('settings/update', 'SettingController@update')->name('settings.update');
+    Route::get('settings/index', 'SettingController@index')->name('settings.index');
+    Route::post('settings/store','SettingController@store')->name('settings.store');
+    Route::post('settings/update/{id}', 'SettingController@update')->name('settings.update');
     //Leave
     Route::resource('leave', 'LeaveController');
     //Holiday

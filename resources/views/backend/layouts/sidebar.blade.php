@@ -29,7 +29,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>General Setup</a></li>
+          <li><a href="{{route('settings.index')}}"><i class="fa fa-circle-o"></i>General Setup</a></li>
           <li><a href="{{route('holiday.index')}}"><i class="fa fa-circle-o"></i>Public Holiday</a></li>
           <li><a href="{{route('office_details.index')}}"><i class="fa fa-circle-o"></i>Office Details</a></li>
           </ul>
@@ -59,7 +59,6 @@
           </a>
           <ul class="treeview-menu">
           <li><a href="{{route('reports.index')}}"><i class="fa fa-circle-o"></i>Attendance Report</a></li>
-          <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>General Settings</a></li>
           </ul>
         </li>
         <li>

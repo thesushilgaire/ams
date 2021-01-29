@@ -87,7 +87,7 @@
                                 </td>
                                 <td>
                                     {{-- @foreach ($data as $item) --}}
-                                        <span style="color:{{$data[0]['remark'] == 'Absent' ? '#fff' : ''}};background-color:{{$item['remark'] == 'Absent' ? 'red' : ''}}">{{$item['remark']}}</span><br>
+                                        <span style="color:{{$data[0]['remark'] == 'Absent' ? '#fff' : ''}};background-color:{{$data[0]['remark'] == 'Absent' ? 'red' : ''}}">{{$item['remark']}}</span>
                                     {{-- @endforeach --}}
                                 </td>
                                 </tr>
