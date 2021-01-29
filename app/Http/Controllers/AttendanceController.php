@@ -24,9 +24,8 @@ class AttendanceController extends Controller
     public function index()
     {
         $settings = Setting::where('status',1)->first();
-
         try{
-            $zk = new ZKLibrary('192.168.0.155', 4370, 'TCP');
+            $zk = new ZKLibrary($settings->ip, 4370, 'TCP');
             // echo 'Requesting for connection</br>';
             $zk->connect(); 
             // echo 'Connected</br>';
@@ -83,7 +82,7 @@ class AttendanceController extends Controller
                 $att = Attendance::insert($data); 
 
                 //clear attendances
-                // $zk->clearAttendance();
+                $zk->clearAttendance();
             }
                 // end working here
                 $zk->enableDevice();

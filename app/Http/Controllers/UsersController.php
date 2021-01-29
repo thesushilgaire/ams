@@ -42,8 +42,10 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        $settings = Setting::where('status',1)->first();
+
         try{
-            $zk = new ZKLibrary('192.168.0.155', 4370, 'TCP');
+            $zk = new ZKLibrary($settings->ip, 4370, 'TCP');
             // echo 'Requesting for connection</br>';
 
             $zk->connect();
@@ -76,7 +78,7 @@ class UsersController extends Controller
                 'blood_group'=>$request->blood_group
             ]);
 
-            // $zk->setUser($user->id,$user->id,$request->name,0,0);
+            $zk->setUser($user->id,$user->id,$request->name,0,0);
             // echo 'Setting user with new data</br>';
             // end working here
 

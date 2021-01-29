@@ -86,9 +86,16 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    {{-- @foreach ($data as $item) --}}
-                                        <span style="color:{{$data[0]['remark'] == 'Absent' ? '#fff' : ''}};background-color:{{$data[0]['remark'] == 'Absent' ? 'red' : ''}}">{{$item['remark']}}</span>
-                                    {{-- @endforeach --}}
+                                    @if($data[0]['remark'] == 'Absent')
+                                    <span style="color:#fff;background-color:red">{{$item['remark']}}</span>
+
+                                    @elseif($data[0]['remark'] == 'Holiday')
+                                    <span style="color:#fff;background-color:rgb(221, 163, 14)">{{$data[0]['remark']}}</span>
+                                    @elseif($data[0]['remark'] == 'Leave')
+                                    <span style="color:#fff;background-color:rgb(221, 14, 211)">{{$data[0]['remark']}}</span>
+                                    @else
+                                    <span>{{$data[0]['remark']}}</span>
+                                    @endif
                                 </td>
                                 </tr>
                             @endforeach
