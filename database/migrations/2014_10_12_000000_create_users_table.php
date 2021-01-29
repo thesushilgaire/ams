@@ -25,9 +25,10 @@ class CreateUsersTable extends Migration
             $table->string('id_card_number')->nullable();
             $table->string('degination')->nullable();
             $table->string('joining_date')->nullable();
-            $table->string('shift_id')->nullable();
+            $table->integer('shift_id')->nullable();
             $table->string('pan_number')->nullable();
             $table->string('bank_account')->nullable();
+            $table->boolean('status')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

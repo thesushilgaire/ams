@@ -55,10 +55,10 @@
                     <td>{{$h->end_date_bs}}</td>
                     <td>
                         @if($h->status =='1')
-                            <span style="background-color:green; padding:5px; border-radius:5px;">Active</span>
+                            <span class="badge btn-primary">Active</span>
                         
                         @else
-                            <span style="background-color:red; padding:5px; border-radius:5px;">InActive</span>
+                            <span class="badge btn-warning">InActive</span>
                         
                         @endif
                     </td>
@@ -98,7 +98,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Name:<span style="color: red">*</span></label>
-                     <input type="text" class="form-control" name="name" id="name">
+                     <input type="text" class="form-control" name="name" id="name" required placeholder="Enter name">
 
                 </div>
            
@@ -106,7 +106,7 @@
             <div class="col-md-6">
                  <div class="form-group">
                     <label>Start Date:<span style="color: red">*</span></label>
-                    <input type="date" class="form-control"  name="start_date_bs" id="start_date_bs">
+                    <input type="text" class="form-control"  name="start_date_bs" id="start_date_bs" required placeholder="Start date">
                
                  </div>
      
@@ -117,15 +117,14 @@
             <div class="col-md-6">
                <div class="form-group">
                    <label>End Date:<span style="color: red">*</span></label>
-                   <input type="date" class="form-control" name="end_date_bs" id="end_date_bs" >
+                   <input type="text" class="form-control" name="end_date_bs" id="end_date_bs" required placeholder="End date">
                </div>
         
             </div>
             <div class="col-md-6">
               <div class="form-group">
                   <label>Status</label>
-                  <select class="form-control" name="status" id="status">
-                      <option value="">--Select--</option>
+                  <select class="form-control" name="status" id="status" required>
                       <option value="1">Active</option>
                       <option value="0">In Active</option>
                   </select>
@@ -164,7 +163,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Name:<span style="color: red">*</span></label>
-                     <input type="text" class="form-control" name="name" id="editname">
+                     <input type="text" class="form-control" name="name" id="editname" required>
 
                 </div>
            
@@ -172,7 +171,7 @@
             <div class="col-md-6">
                  <div class="form-group">
                     <label>Start Date:<span style="color: red">*</span></label>
-                    <input type="date" class="form-control"  name="start_date_bs" id="editstart_date_bs">
+                    <input type="text" class="form-control"  name="start_date_bs" id="editstart_date_bs" required>
                
                  </div>
      
@@ -183,17 +182,15 @@
             <div class="col-md-6">
                <div class="form-group">
                    <label>End Date:<span style="color: red">*</span></label>
-                   <input type="date" class="form-control" name="end_date_bs" id="editend_date_bs" >
+                   <input type="text" class="form-control" name="end_date_bs" id="editend_date_bs" required>
                </div>
         
             </div>
-          </div>
-          <div class="row">
+        
                <div class="col-md-6">
                     <div class="form-group">
                         <label>Status</label>
-                        <select class="form-control" name="status" id="editstatus">
-                            <option value="">--Select--</option>
+                        <select class="form-control" name="status" id="editstatus" required>
                             <option value="1">Active</option>
                             <option value="0">In Active</option>
                         </select>
@@ -233,13 +230,17 @@
   modal.find('.modal-body #editForm').prop('action',`{{url('holiday/${id}')}}`);
   })
    </script>
-
-
-
-
 <script>
-  $(function () {
-    $('#usersTable').DataTable({
+    $(document).ready(function(){
+        /* Initialize NepaliDatepicker with options */
+        $("#start_date_bs,#end_date_bs,#editstart_date_bs,#editend_date_bs").nepaliDatePicker({
+        ndpYear: true,
+        ndpMonth: true,
+        ndpYearCount: 10
+        });
+
+        // datatables
+        $('#usersTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -247,7 +248,6 @@
       "info": true,
       "autoWidth": false
     });
-  });
-</script>
-@endpush
+    });
+</script>@endpush
 @endsection()

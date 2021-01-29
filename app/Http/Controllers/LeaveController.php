@@ -15,8 +15,8 @@ class LeaveController extends Controller
      */
     public function index()
     {
-        $leaves_data=Leave::all();
-        $users=User::select('id','name')->get();
+        $leaves_data=Leave::orderBy('start_date_bs','desc')->get();
+        $users=User::where('status',1)->select('id','name')->get();
         return view('backend.pages.leave.index',compact('users','leaves_data'));
     }
 
@@ -43,8 +43,8 @@ class LeaveController extends Controller
             $leave=new Leave;
             $leave->user_id=$data['user_id'];
             $leave->remarks=$data['remarks'];
-            $leave->start_date_ad=$data['start_date_bs'];
-            $leave->end_date_ad=$data['end_date_bs'];
+            $leave->start_date_ad=bsToad($data['start_date_bs']);
+            $leave->end_date_ad=bsToad($data['end_date_bs']);
             $leave->start_date_bs=$data['start_date_bs'];
             $leave->end_date_bs=$data['end_date_bs'];
             $leave->status=$data['status'];
@@ -97,8 +97,8 @@ class LeaveController extends Controller
             $leave=Leave::find($id);
             $leave->user_id=$data['user_id'];
             $leave->remarks=$data['remarks'];
-            $leave->start_date_ad=$data['start_date_bs'];
-            $leave->end_date_ad=$data['end_date_bs'];
+            $leave->start_date_ad=bsToad($data['start_date_bs']);
+            $leave->end_date_ad=bsToad($data['end_date_bs']);
             $leave->start_date_bs=$data['start_date_bs'];
             $leave->end_date_bs=$data['end_date_bs'];
             $leave->status=$data['status'];

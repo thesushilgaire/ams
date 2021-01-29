@@ -15,67 +15,94 @@
 @section("main-content")
         <div class="content">
         <h4 style="color: #0e5461">ATTENDANCE REPORT</h4>
-           <br>
            <form method="POST" action="{{route('attendance.fetch')}}">
             @csrf
             <div class="row">
                 <div class="col-lg-12" >
-                  @if(@$username) <center> <h4>Attendance report of <b>{{@$username}}</b> from <b>{{@$dateFrom}}</b> to <b>{{@$dateTo}}</b></h4></center>@endif
-                    <table id="example1" class="table table-bordered table-hover text-nowrap" style="width:100%;background-color:#fff">
+                   
+                        <div class="col-lg-3">
+                            <input type="hidden" id="username" value="{{@$username}}">
+                            <input type="hidden" id="fromDate" value="{{@$dateFrom}}">
+                            <input type="hidden" id="toDate" value="{{@$dateTo}}">
+                                <label for="">Select User</label>
+                                <select id="user" name="user" class="form-control" style="width:100%" required>
+                                    <option value="">Select User...</option>
+                                    @foreach($users as $user)
+                                <option value="{{$user->id}}" username="{{$user->name}}">{{$user->name}}</option>
+                                    @endforeach()
+                                </select>
+                        </div>
+                     
+                        <div class="col-lg-3">
+                            <label for="" style="color: #000">From</label>
+                            <input type="text" id="dateFrom" name="date_from" class="form-control" value="{{substr(adToBs(date('Y-m-d')),0,7)}}-01" style="height:30px;width:90%">
+                        </div>
+                         
+                        <div class="col-lg-3">
+                            <label for="To" style="color:#000">To</label>
+                            <input type="text" id="dateTo" name="date_to" class="form-control" value="{{adToBs(date('Y-m-d'))}}" style="height:30px;width:90%">
+                        </div>
+                        
+                        <div class="col-lg-3">
+                            <input type="submit" class="btn btn-primary" value="Search" id="search" style="margin-top: 28px">
+                        </div>
+           
+                </form>
+        </div>
+    </div>
+    <br/>
+                <div class="row">
+                    @if(@$username) <center> <h4 style="color: green">Attendance report of <b>{{@$username}}</b> from <b>{{@$dateFrom}}</b> to <b>{{@$dateTo}}</b></h4></center>@endif
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+
+                  <table id="example1" class="table table-bordered table-hover text-nowrap" style="width:100%;background-color:#fff">
                         <thead>
-                            <tr style="background:white">
-                                <td style="width: 120px">
-                                <input type="hidden" id="username" value="{{@$username}}">
-                                <input type="hidden" id="fromDate" value="{{@$dateFrom}}">
-                                <input type="hidden" id="toDate" value="{{@$dateTo}}">
-                                    <label for="">S</label>
-                                    <select id="user" name="user" class="form-control" style="width:100%" required>
-                                        <option value="">Select User...</option>
-                                        @foreach($users as $user)
-                                    <option value="{{$user->id}}" username="{{$user->name}}">{{$user->name}}</option>
-                                        @endforeach()
-                                    </select>
-                                </td>
-                                <td>
-                                    <label for="" style="color: #000">From</label>
-                                <input type="text" id="dateFrom" name="date_from" class="form-control" value="{{adToBs(substr(\Carbon\Carbon::now()->subDays(30),0,10))}}" style="height:30px;width:90%"></td>
-                                <td>
-                                    <label for="To" style="color:#000">To</label>
-                                    <input type="text" id="dateTo" name="date_to" class="form-control" value="{{adToBs(date('Y-m-d'))}}" style="height:30px;width:90%"></td>
-                                    <td style="color: #000">
-                                        <input type="submit" value="Search" id="search">
-                                    </td>
-                            </tr>
-                        </form>
+                      
                         <tr>
-                        <th style="width:30px">SN</th>
-                            <th>Day</th>
-                            <th>Date</th>
+                        <th>SN</th>
+                            <th>Work Day</th>
                             <th>Time</th>
                             <th>Status</th>
+                            <th>Remark</th>
                         </tr>
                         </thead>
                         <tbody id="attendanceTableBody">
-                            @if(@$attendances)
-                            @foreach ($attendances as $key => $data)
-                            <tr>
-                            <td style="width:30px">{{$loop->iteration}}</td>
-                            <td>{{\Carbon\Carbon::parse(bsToad($key))->format('l')}}</td>
-                            <td>{{$key}}</td>
-                            <td> 
-                                @foreach ($data->reverse() as $item)
-                                        <span style="padding:5px">{{\Carbon\Carbon::parse($item->time_bs)->format('g:i A')}}</span><br>
-                                @endforeach
-                            </td>
-                            <td>
-                                @foreach ($data->reverse() as $item)
-                                    <span style="padding:5px">{{$item->status}}</span><br>
-                                @endforeach
-                            </td>
-                            </tr>
+                            @if(@$finalReport)
+                            @foreach ($finalReport as $index => $data)
+                                <tr style="font-weight:600;color:@if(\Carbon\Carbon::parse(bsToad($data[0]['date']))->format('l') == 'Saturday') #fff @else #000  @endif;background-color:@if(\Carbon\Carbon::parse(bsToad($data[0]['date']))->format('l') == 'Saturday') #f95f3f  @endif">
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{\Carbon\Carbon::parse(bsToad($data[0]['date']))->format('l')}}, {{ $data[0]['date']}}</td>
+                                 <td> 
+                                    @foreach ($data as $item)
+                                            <span style="padding:5px">{{\Carbon\Carbon::parse($item['time'])->format('g:i A') == '12:00 AM' ? '': \Carbon\Carbon::parse($item['time'])->format('g:i A')}}</span><br>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach ($data as $item)
+                                        <span>{{$item['status']}}</span><br>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    {{-- @foreach ($data as $item) --}}
+                                        <span style="color:{{$data[0]['remark'] == 'Absent' ? '#fff' : ''}};background-color:{{$item['remark'] == 'Absent' ? 'red' : ''}}">{{$item['remark']}}</span><br>
+                                    {{-- @endforeach --}}
+                                </td>
+                                </tr>
                             @endforeach
-                            @endif
+                            @endif  
                         </tbody>
+                        <tfoot>
+                            <tr>
+                            <td><label>Summary:</label></td>
+                            <td><label> Present: {{@$countAttendance}} days</label></td>
+                            <td><label>Absent: {{@$countAbsent}} days</label></td>
+                            <td><label>Leaves: {{@$countLeaves}} days</label></td>
+                            <td><label>Holidays: {{@$countHolidays}} days</label></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -104,12 +131,13 @@
         ordering:false,
         "paging": true,
         "displayStart": 0,
-        "lengthMenu": [[26, 52,78,-1], [26, 52, 78,"All"]],
+        "lengthMenu": [[32, 64,88,-1], [32, 64, 88,"All"]],
         "lengthChange": true,
         dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'excelHtml5',
+                footer: true,
                 messageTop:function () {
                     let username = $('#username').val();
                     let from = $('#fromDate').val();
@@ -121,6 +149,7 @@
                 extend: 'pdfHtml5',
                 orientation: 'portrait',
                 pageSize: 'A4',
+                footer: true,
                 messageTop:function () {
                     let username = $('#username').val();
                     let from = $('#fromDate').val();
@@ -131,6 +160,7 @@
             {
                 extend: 'print',
                 title:' ',
+                footer: true,
                 messageTop: function () {
                     let username = $('#username').val();
                     let from = $('#fromDate').val();

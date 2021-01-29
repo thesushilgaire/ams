@@ -107,8 +107,8 @@
                 <input type="number" class="form-control" name="number" required id="number" placeholder="Enter number">
               </div>
               <div class="col-md-4">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password">
+                <label for="password">Password<span style="color: red">*</span></label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
               </div>
           </div>
           <div class="row">

@@ -16,7 +16,7 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="treeview">
-        <a href="{{url('/')}}">
+        <a href="{{url('/dashboard')}}">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
@@ -29,7 +29,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="{{route('reports.index')}}"><i class="fa fa-circle-o"></i>General Setup</a></li>
+          <li><a href="{{route('settings.create')}}"><i class="fa fa-circle-o"></i>General Setup</a></li>
           <li><a href="{{route('holiday.index')}}"><i class="fa fa-circle-o"></i>Public Holiday</a></li>
           <li><a href="{{route('office_details.index')}}"><i class="fa fa-circle-o"></i>Office Details</a></li>
           </ul>
@@ -41,12 +41,12 @@
         </li>
         <li>
         <a href="{{route('attendance.index')}}">
-            <i class="fa fa-clock-o"></i> <span>Leave Mgmt.</span>
+            <i class="fa fa-clock-o"></i> <span>Attendance Mgmt.</span>
           </a>
         </li>
         <li>
           <a href="{{route('leave.index')}}">
-              <i class="fa fa-clock-o"></i> <span>Leave Mgmt1.</span>
+              <i class="fa fa-th"></i> <span>Leave Mgmt1.</span>
             </a>
           </li>
         <li class="treeview">

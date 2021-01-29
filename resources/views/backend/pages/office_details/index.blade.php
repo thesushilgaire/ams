@@ -56,7 +56,7 @@
                     <td>{{$d->phone_no}}</td>
                     <td>{{$d->email}}</td>
                     <td>
-                     <img src="{{asset('Images/Logo/'.$d->logo) }}" alt="" style="width:100px; height:100px">
+                     <img src="{{asset('Images/Logo/'.$d->logo) }}" alt="" style="width:60px; height:60">
                     </td>
                     <td>
                        <a href="#" data-id="{{$d->id}}" data-name="{{$d->office_name}}" data-address="{{$d->address}}" data-phone_no="{{$d->phone_no}}"

@@ -9,13 +9,13 @@ use DB;
 use App\Models\User;
 use Yajra\DataTables\DataTables;
 use App\Models\Setting;
+use Auth;
+use App\Models\Holiday;
+use App\Models\Leave;
+use Illuminate\Support\Arr;
 
 class AttendanceController extends Controller
 {
-
-    public function dashboard(){
-        return view('dashboard');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +23,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $settings = Setting::first();
+        $settings = Setting::where('status',1)->first();
 
         try{
             $zk = new ZKLibrary('192.168.0.155', 4370, 'TCP');
@@ -36,15 +36,7 @@ class AttendanceController extends Controller
             
             // start working here
             $attendances = $zk->getAttendance(); 
-            // $collection = collect($attendances);
-      
-            // $grouped = $collection->groupBy(1,substr(3,0,10))->map(function ($row) {
-            //             return response([
-            //                 'count' => $row->count(),
-            //                 'data' => $row
-            //             ]);
-            //         });
-            // dd($grouped);
+        
             // echo 'Getting attendances</br>';
             if(count($attendances) > 0 ){
                 foreach($attendances as $key=>$a){
@@ -117,82 +109,116 @@ class AttendanceController extends Controller
             return view('backend.pages.attendance.index',compact('allAttendances'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Attendance $attendance)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Attendance $attendance)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Attendance $attendance)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Attendance $attendance)
-    {
-        //
-    }
     // attendance report
     public function fetchAttendance(Request $request){
-        $users = User::all();
+
         $username = User::where('id',$request->user)->pluck('name')->first();
         $dateFrom = $request->date_from;
         $dateTo = $request->date_to;
-    
-        $attendances = Attendance::where('attendances.user_id',$request->user)->whereBetween('attendances.time_bs',[$request->date_from,$request->date_to])->orderBy('attendances.time_bs','desc')->get()->groupBy(function($a){
+        $users = User::where('status',1)->get();
+
+        // get holidays
+        $holidays = $this->fetchHolidaysBetweenDates($dateFrom,$dateTo);
+
+        // get leaves
+        $leaves = $this->fetchLeavesOfUserBetweenDates($request->user,$dateFrom,$dateTo);
+        
+        // get dates between two days 
+        $datesBetweenDays = [];
+        $period = \Carbon\CarbonPeriod::create($dateFrom,$dateTo);
+        foreach($period as $date){
+                array_push($datesBetweenDays,$date->format('Y-m-d'));
+        }
+        $attendanceReport = [];
+
+       // attendances and present days
+       $attendances = Attendance::where('attendances.user_id',$request->user)->whereBetween('attendances.time_bs',[$request->date_from,\Carbon\Carbon::parse($request->date_to)->addDay()])->get();
+       $totalAttendanceDates = [];
+       foreach($attendances as $attendance){
+            array_push($totalAttendanceDates,substr($attendance->time_bs,0,10));
+
+            if(in_array(substr($attendance->time_bs,0,10),$datesBetweenDays)){
+                array_push($attendanceReport,['date'=>substr($attendance->time_bs,0,10),'time'=>substr($attendance->time_bs,10),'status'=>$attendance->status,'remark'=>'Present']);
+            }
+        }
+
+        // absent days 
+        $absentDays = [];
+        $leavesDays = [];
+        $holidaysDays = [];
+        // finding weekend,holiday,leave and absent dates
+        foreach($datesBetweenDays as $date){
+            if(\Carbon\Carbon::parse(bsToAd($date))->format('l') === 'Saturday'){
+                array_push($attendanceReport,['date'=>$date,'time'=>'00:00','status'=>'','remark'=>'Weekend']);
+            }
+            if(in_array($date,$holidays)){
+                array_push($attendanceReport,['date'=>$date,'time'=>'00:00','status'=>'','remark'=>'Holiday']);
+                array_push($holidaysDays,$date);
+            }
+            if(in_array($date,$leaves)){
+                array_push($attendanceReport,['date'=>$date,'time'=>'00:00','status'=>'','remark'=>'Leave']);
+                array_push($leavesDays,$date);
+            }  
+            if(in_array($date,$totalAttendanceDates) == false && in_array($date,$leaves) == false && in_array($date,$holidays) == false && \Carbon\Carbon::parse(bsToAd($date))->format('l') != 'Saturday'){
+                array_push($attendanceReport,['date'=>$date,'time'=>'00:00','status'=>'','remark'=>'Absent']);
+                array_push($absentDays,$date);
+            }
+        }
+
+        // grouping by date
+        foreach($attendanceReport as $report){
+            $finalReport[$report['date']][] = ['date'=>$report['date'],'time'=>$report['time'],'status'=>$report['status'],'remark'=>$report['remark']];
+        }
+        
+        // sorting by date
+        usort($finalReport, function($a, $b) {
+            return new \DateTime($a[0]['date']) <=> new \DateTime($b[0]['date']);
+          });
+
+        $atts = Attendance::where('attendances.user_id',$request->user)->whereBetween('attendances.time_bs',[$request->date_from,\Carbon\Carbon::parse($request->date_to)->addDay()])->orderBy('attendances.time_bs','desc')->get()->groupBy(function($a){
             return (\Carbon\Carbon::parse($a->time_bs))->format('Y-m-d');
         });
-        // dd($attendances);
-        return view('backend.pages.reports.attendance_report',compact('attendances','users','username','dateFrom','dateTo'));
+        $countAttendance = count($atts);
+        $countAbsent = count($absentDays);
+        $countLeaves = count($leavesDays);
+        $countHolidays = count($holidaysDays);
+        // dd($finalReport);
+            return view('backend.pages.reports.attendance_report',compact('countLeaves','countHolidays','countAbsent','countAttendance','finalReport','users','username','dateFrom','dateTo'));
+        }
+
+    // total holidays between two given dates 
+    public function fetchHolidaysBetweenDates($from,$to){
+        $totalHolidays = [];
+        $holidays = Holiday::where('status',1)->select('start_date_bs','end_date_bs')->get();
+        if(count($holidays) > 0){
+            foreach($holidays as $holiday){
+                $period = \Carbon\CarbonPeriod::create($holiday->start_date_bs,$holiday->end_date_bs);
+                foreach($period as $date){
+                    if(\Carbon\Carbon::parse($date)->between(\Carbon\Carbon::parse($from),\Carbon\Carbon::parse($to))){
+                        array_push($totalHolidays,$date->format('Y-m-d'));
+                    }
+                }
+            }
+        }
+        return $totalHolidays;
     }
+
+    // total leaves of user between two dates
+    public function fetchLeavesOfUserBetweenDates($userId,$from,$to){
+        $totalLeaves = [];
+        $leaves = Leave::where('user_id',$userId)->where('status',1)->select('start_date_bs','end_date_bs')->get();
+        if(count($leaves) > 0){
+            foreach($leaves as $leave){
+                $period = \Carbon\CarbonPeriod::create($leave->start_date_bs,$leave->end_date_bs);
+                foreach($period as $date){
+                    if(\Carbon\Carbon::parse($date)->between(\Carbon\Carbon::parse($from),\Carbon\Carbon::parse($to))){
+                        array_push($totalLeaves,$date->format('Y-m-d'));
+                    }
+                }
+            }
+        }
+        return $totalLeaves;
+    }
+
 }
+

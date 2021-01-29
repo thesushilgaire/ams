@@ -57,10 +57,10 @@
                     <td>{{$leave->end_date_bs}}</td>
                     <td>
                         @if($leave->status =='1')
-                            <span style="background-color:green; padding:5px; border-radius:5px;">Approved</span>
+                            <span class="badge btn-primary">Approved</span>
                         
                         @else
-                            <span style="background-color:red; padding:5px; border-radius:5px;">Not Approved</span>
+                            <span class="badge btn-warning">Not Approved</span>
                         
                         @endif
                     </td>
@@ -101,7 +101,7 @@
                 <div class="form-group">
                     <label>Employee Name:<span style="color: red">*</span></label>
                     <select  class="form-control"  name="user_id" id="user_id" required>
-                      <option value="">--Select--</option>
+                      <option value="">--Select User--</option>
                       @foreach($users as $u)
                        
                        <option value="{{$u->id}}">{{$u->name}}</option>
@@ -116,7 +116,7 @@
             <div class="col-md-6">
                  <div class="form-group">
                     <label>Start Date:<span style="color: red">*</span></label>
-                    <input type="date" class="form-control"  name="start_date_bs" id="start_date_bs">
+                    <input type="text" class="form-control"  name="start_date_bs" id="start_date_bs" required>
                
                  </div>
      
@@ -125,26 +125,26 @@
           </div>
           <div class="row">
             <div class="col-md-6">
+              <div class="form-group">
+                  <label>End Date:<span style="color: red">*</span></label>
+                  <input type="text" class="form-control" name="end_date_bs" id="end_date_bs" required>
+              </div>
+       
+           </div>
+            <div class="col-md-6">
                <div class="form-group">
                   <label>Remarks:<span style="color: red">*</span></label>
-                <textarea  class="form-control" name="remarks" id="remarks"></textarea>
+                <textarea class="form-control" name="remarks" id="remarks" required></textarea>
                 </div>
           
              </div>
-            <div class="col-md-6">
-               <div class="form-group">
-                   <label>End Date:<span style="color: red">*</span></label>
-                   <input type="date" class="form-control" name="end_date_bs" id="end_date_bs" >
-               </div>
-        
-            </div>
+           
           </div>
           <div class="row">
                <div class="col-md-6">
                     <div class="form-group">
                         <label>Status</label>
-                        <select class="form-control" name="status" id="status">
-                            <option value="">--Select--</option>
+                        <select class="form-control" name="status" id="status" required>
                             <option value="1">Approved</option>
                             <option value="0">Not Approved</option>
                         </select>
@@ -198,7 +198,7 @@
               <div class="col-md-6">
                    <div class="form-group">
                       <label>Start Date:<span style="color: red">*</span></label>
-                      <input type="date" class="form-control"  name="start_date_bs" id="editstart_date_bs">
+                      <input type="text" class="form-control"  name="start_date_bs" id="editstart_date_bs" required>
                  
                    </div>
        
@@ -207,26 +207,26 @@
             </div>
             <div class="row">
               <div class="col-md-6">
+                <div class="form-group">
+                    <label>End Date:<span style="color: red">*</span></label>
+                    <input type="text" class="form-control" name="end_date_bs" id="editend_date_bs" required>
+                </div>
+         
+             </div>
+              <div class="col-md-6">
                  <div class="form-group">
                     <label>Remarks:<span style="color: red">*</span></label>
-                  <textarea  class="form-control" name="remarks" id="editremarks"></textarea>
+                  <textarea  class="form-control" name="remarks" id="editremarks" required></textarea>
                   </div>
             
                </div>
-              <div class="col-md-6">
-                 <div class="form-group">
-                     <label>End Date:<span style="color: red">*</span></label>
-                     <input type="date" class="form-control" name="end_date_bs" id="editend_date_bs">
-                 </div>
           
-              </div>
             </div>
             <div class="row">
                  <div class="col-md-6">
                       <div class="form-group">
                           <label>Status</label>
-                          <select class="form-control" name="status" id="editstatus">
-                              <option value="">--Select--</option>
+                          <select class="form-control" name="status" id="editstatus" required>
                               <option value="1">Approved</option>
                               <option value="0">Not Approved</option>
                           </select>
@@ -275,6 +275,13 @@
 
 <script>
   $(function () {
+     /* Initialize NepaliDatepicker with options */
+     $("#start_date_bs,#end_date_bs,#editstart_date_bs,#editend_date_bs").nepaliDatePicker({
+        ndpYear: true,
+        ndpMonth: true,
+        ndpYearCount: 10
+        });
+        // datatable
     $('#usersTable').DataTable({
       "paging": true,
       "lengthChange": true,

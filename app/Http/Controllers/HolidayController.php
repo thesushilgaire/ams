@@ -14,7 +14,7 @@ class HolidayController extends Controller
      */
     public function index()
     {
-        $holiday=Holiday::all();
+        $holiday=Holiday::orderBy('start_date_bs','desc')->get();
         return view('backend.pages.holiday.index',compact('holiday'));
     }
 
@@ -40,11 +40,11 @@ class HolidayController extends Controller
         try{
             $leave=new Holiday;
             $leave->leave_name=$data['name'];
-            $leave->start_date_ad=$data['start_date_bs'];
-            $leave->end_date_ad=$data['end_date_bs'];
-            $leave->start_date_bs=$data['start_date_bs'];
-            $leave->end_date_bs=$data['end_date_bs'];
-            $leave->status=$data['status'];
+            $leave->start_date_ad = bsToad($data['start_date_bs']);
+            $leave->end_date_ad = bsToad($data['end_date_bs']);
+            $leave->start_date_bs = $data['start_date_bs'];
+            $leave->end_date_bs = $data['end_date_bs'];
+            $leave->status = $data['status'];
             $leave->save();
 
             return redirect('holiday')->with('success','Data Inserted');
@@ -92,8 +92,8 @@ class HolidayController extends Controller
         try{
             $leave=Holiday::find($id);
             $leave->leave_name=$data['name'];
-            $leave->start_date_ad=$data['start_date_bs'];
-            $leave->end_date_ad=$data['end_date_bs'];
+            $leave->start_date_ad=bsToad($data['start_date_bs']);
+            $leave->end_date_ad=bsToad($data['end_date_bs']);
             $leave->start_date_bs=$data['start_date_bs'];
             $leave->end_date_bs=$data['end_date_bs'];
             $leave->status=$data['status'];
