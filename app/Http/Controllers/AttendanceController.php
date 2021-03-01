@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use Illuminate\Http\Request;
-use ZKLibrary; // Important
+use App\ZKLibrary; // Important
 use DB;
 use App\Models\User;
 use Yajra\DataTables\DataTables;
@@ -92,6 +92,7 @@ class AttendanceController extends Controller
 
         } catch(\Exception $e){
             
+            // dd($e);
             $zk->enableDevice();
             // echo 'enabling device</br>';
             $zk->disconnect();

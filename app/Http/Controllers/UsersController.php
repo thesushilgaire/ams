@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use ZKLibrary;
+use App\ZKLibrary;
 use App\Models\User;
 use App\Models\UserTemplate;
 use DB;
@@ -50,7 +50,6 @@ class UsersController extends Controller
 
             $zk->connect();
             // echo 'Connected</br>';
-
             $zk->disableDevice();
             // echo 'disabling device</br>';
             // start working here
@@ -88,6 +87,12 @@ class UsersController extends Controller
             $zk->disconnect();
             // echo 'disconnected';
         }catch(\Exception $e){
+            // dd($e);
+            $zk->enableDevice();
+            // echo 'enabling device</br>';
+
+            $zk->disconnect();
+            // echo 'disconnected';
         }
         return redirect()->route('user.index');
     }

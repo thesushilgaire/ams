@@ -1,5 +1,5 @@
 <?php
-namespace App\Helpers;
+namespace App;
 //error_reporting(0);
 
 define('CMD_CONNECT', 1000);
@@ -83,7 +83,7 @@ class ZKLibrary {
 		}
 		else {
 			$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-			$this->setTimeout($this->sec, $this->usec);
+			// $this->setTimeout($this->sec, $this->usec);
 		}
 	}
 	public function __destruct()
